@@ -5,7 +5,7 @@ from flask import request, jsonify
 from models import db
 from models.usuario import Usuario, TipoUsuario
 from models.professor import Professor
-from models.estudante import Estudante
+from models.estudante import Estudantedddddddddd
 from models.instituicao import Instituicao
 
 import hashlib
@@ -52,7 +52,6 @@ def cadastrar_professor(usuario):
     if len(instituicao) == 0:
         instituicao = Instituicao.create(nome=nome_instituicao)
 
-    print(instituicao)
     Professor.create(usuario=usuario, instituicao=instituicao)
 
     return jsonify({'mensagem': 'Professor cadastrado com sucesso.'}), 200
