@@ -14,13 +14,12 @@ from peewee import CharField, ForeignKeyField
 
 class Estudante(BaseModel):
     usuario = ForeignKeyField(Usuario)
-    nome = CharField()
     instituicao = ForeignKeyField(Instituicao)
 
-    @get
+    @property
     def inscricoes(self):
         return []
 
-    @get
+    @property
     def atividades(self):
         return []

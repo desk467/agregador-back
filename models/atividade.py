@@ -8,7 +8,7 @@ que foram criadas para uma disciplina.
 
 from models import BaseModel
 from models.disciplina import Disciplina
-from peewee import CharField, TextField, ForeignKeyField
+from peewee import CharField, TextField, DateField, ForeignKeyField
 
 
 class Atividade(BaseModel):
@@ -16,3 +16,4 @@ class Atividade(BaseModel):
 
     nome = CharField()
     descricao = TextField()
+    data = DateField()

@@ -13,16 +13,16 @@ from peewee import CharField, TextField
 
 class Instituicao(BaseModel):
     nome = CharField()
-    descricao = TextField()
+    descricao = TextField(null=True)
 
-    @get
+    @property
     def disciplinas(self):
         return []
 
-    @get
+    @property
     def alunos(self):
         return []
 
-    @get
+    @property
     def professores(self):
         return []

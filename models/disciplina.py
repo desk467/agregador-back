@@ -19,10 +19,10 @@ class Disciplina(BaseModel):
     descricao = TextField()
     instituicao = ForeignKeyField(Instituicao)
 
-    @get
+    @property
     def alunos_inscritos():
         return []
     
-    @get
+    @property
     def atividades():
         return []

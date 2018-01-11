@@ -16,6 +16,6 @@ class EstudanteDisciplina(BaseModel):
     estudante = ForeignKeyField(Estudante)
     disciplina = ForeignKeyField(Disciplina)
 
-    @get
+    @property
     def atividades(self):
         return []

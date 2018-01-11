@@ -14,9 +14,8 @@ from peewee import CharField, ForeignKeyField
 
 class Professor(BaseModel):
     usuario = ForeignKeyField(Usuario)
-    nome = CharField()
     instituicao = ForeignKeyField(Instituicao)
 
-    @get
+    @property
     def disciplinas(self):
         return []
