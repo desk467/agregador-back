@@ -1,3 +1,5 @@
+import jwt
+
 from app import app
 
 from flask import request, jsonify
@@ -5,8 +7,12 @@ from flask import request, jsonify
 from models import db
 from models.usuario import Usuario, TipoUsuario
 from models.professor import Professor
-from models.estudante import Estudantedddddddddd
+from models.estudante import Estudante
 from models.instituicao import Instituicao
+
+from playhouse.shortcuts import model_to_dict
+
+from util import campos_presentes_na_requisicao
 
 import hashlib
 
@@ -20,20 +26,20 @@ def senha_hasheada(senha):
 
 @app.route('/login', methods=['POST'])
 def login():
-    email = request.json['email'] if 'email' in request.json else None
-    senha = request.json['senha'] if 'senha' in request.json else None
+    erros = campos_presentes_na_requisicao('email senha')
+    
+    if erros: return jsonify(erros), 400
 
-    if not email:
-        return jsonify({'mensagem': 'Campo "email" obrigatório.'}), 400
-
-    if not senha:
-        return jsonify({'mensagem': 'Campo "senha" obrigatório.'}), 400
+    email = request.json['email']
+    senha = request.json['senha']
 
     try:
         usuario = Usuario.get(email=email)
 
         if usuario.hash_senha == senha_hasheada(senha):
-            return jsonify({'mensagem': 'Usuário logado com sucesso.', 'token': '123'})
+            token = jwt.encode({'nome': usuario.nome, 'id': usuario.id }, app.secret_key, algorithm='HS256')
+
+            return jsonify({'mensagem': 'Usuário logado com sucesso.', 'token': token.decode('utf-8') })
         else:
             return jsonify({'mensagem': 'Senha inválida.'}), 400
 
@@ -49,6 +55,7 @@ def cadastrar_professor(usuario):
 
     instituicao = Instituicao.select().where(
         Instituicao.nome % '%{}%'.format(nome_instituicao))
+        
     if len(instituicao) == 0:
         instituicao = Instituicao.create(nome=nome_instituicao)
 
@@ -81,22 +88,14 @@ cadastrar[TipoUsuario.PROFESSOR] = cadastrar_professor
 
 @app.route('/cadastro', methods=['POST'])
 def cadastro():
-    nome = request.json['nome'] if 'nome' in request.json else None
-    email = request.json['email'] if 'email' in request.json else None
-    senha = request.json['senha'] if 'senha' in request.json else None
-    tipo_usuario = request.json['tipo_usuario'] if 'tipo_usuario' in request.json else None
+    erros = campos_presentes_na_requisicao('nome email senha tipo_usuario')
+    
+    if erros: return jsonify(erros), 400
 
-    if not nome:
-        return jsonify({'mensagem': 'Campo "nome" obrigatório.'}), 400
-
-    if not email:
-        return jsonify({'mensagem': 'Campo "email" obrigatório.'}), 400
-
-    if not senha:
-        return jsonify({'mensagem': 'Campo "senha" obrigatório.'}), 400
-
-    if not tipo_usuario:
-        return jsonify({'mensagem': 'Campo "tipo_usuario" obrigatório.'}), 400
+    nome = request.json['nome'] 
+    email = request.json['email'] 
+    senha = request.json['senha'] 
+    tipo_usuario = request.json['tipo_usuario']
 
     try:
         tipo_usuario = TipoUsuario(tipo_usuario)
@@ -116,7 +115,6 @@ def cadastro():
 
             return resposta, codigo
         except Exception as e:
-            print(e)
             db.rollback()
 
             return jsonify({'mensagem': 'Erro ao cadastrar usuário.'}), 500
