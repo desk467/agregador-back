@@ -2,12 +2,17 @@
 
 {% block content %}
 <div class="jumbotron">
-    <h1>{{ saudacao }}, {{ session.usuario.nome }} </h1>
-
-    {% if session.usuario.tipo_usuario == 1 %}
-        {% include 'usuario/area_professor.html' %}
+    {% if session.usuario %}
+        <h1>{{ saudacao }}, {{ session.usuario.nome }} </h1>
+        <hr>
+        {% if session.usuario.tipo_usuario == 1 %}
+            {% include 'usuario/area_professor.html' %}
+        {% else %}
+            {% include 'usuario/area_aluno.html' %}
+        {% endif %}
     {% else %}
-        {% include 'usuario/area_aluno.html' %}
+        <h1>Seja bem vindo ao </h1><h1 class="destaque">stodo.</h1>
+        <h3>Um local onde você pode visualizar as atividades dos professores de sua instituição, de maneira descomplicada.</h3>
     {% endif %}
 </div>
 {% endblock %}

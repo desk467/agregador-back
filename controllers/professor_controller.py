@@ -19,7 +19,6 @@ from util import usuario
 
 # Decorators úteis para o controller
 
-
 def injetar_professor(handler):
     '''
     professor_existe

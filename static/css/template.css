@@ -1,6 +1,7 @@
 * {
     font-family: 'Lato', sans-serif;
     font-size: 17.5px;
+    line-height: 2em;
 }
 
 .espaco {
@@ -11,8 +12,13 @@ label, li, p {
     color: #444;
 }
 
-h1, h2, h3, strong {
+h1, h2, h3, h4, strong {
     font-family: 'Montserrat';
+    font-weight: 700;
+}
+
+h3, h4 {
+    font-weight: 300;
 }
 
 .mensagens-sucesso {
@@ -74,6 +80,7 @@ h1, h2, h3, strong {
     bottom: 0;
 
     box-shadow: 0px -1px 1px rgba(0,0,0,0.15);
+    border-top: 1px solid #ddd;
     padding: 1.25em .25em;
     margin-top: 3em;
     width: 100%;
@@ -132,4 +139,10 @@ a.btn-focused  {
 
 .radio-item:hover {
     background: rgba(0,0,0,0.075);
+}
+
+.destaque {
+    color: rgb(113, 209, 57) !important;
+    padding-bottom: .35em;
+    border-bottom: 3px solid rgb(113, 209, 57);
 }
