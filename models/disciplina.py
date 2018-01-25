@@ -9,12 +9,12 @@ instituição.
 
 from models import BaseModel
 from models.instituicao import Instituicao
-from models.usuario import Usuario
+from models.professor import Professor
 from peewee import CharField, ForeignKeyField, TextField
 
 
 class Disciplina(BaseModel):
-    usuario = ForeignKeyField(Usuario, related_name="administrador")
+    professor = ForeignKeyField(Professor, related_name="administrador")
     nome = CharField()
     descricao = TextField()
     instituicao = ForeignKeyField(Instituicao)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:700"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+    <title>Agregador de disciplinas</title>
+</head>
+
+<body>
+    {% include 'template/nav.html' %}
+
+    <div class="mensagens-sucesso">
+        {% with mensagens = get_flashed_messages() %}
+        {% if mensagens %}
+            {% for mensagem in mensagens %}
+                <div class="alert alert-success">{{ mensagem }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    
+    <main class="main container">
+        {% block content %} {% endblock %}
+    </main>
+    
+    {% include 'template/footer.html' %}
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

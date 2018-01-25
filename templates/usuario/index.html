@@ -1,0 +1,13 @@
+{% extends 'template/index.html' %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1>{{ saudacao }}, {{ session.usuario.nome }} </h1>
+
+    {% if session.usuario.tipo_usuario == 1 %}
+        {% include 'usuario/area_professor.html' %}
+    {% else %}
+        {% include 'usuario/area_aluno.html' %}
+    {% endif %}
+</div>
+{% endblock %}

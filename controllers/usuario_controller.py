@@ -2,7 +2,7 @@ import jwt
 
 from app import app
 
-from flask import request, jsonify
+from flask import request, session, redirect, url_for, render_template, flash
 
 from models import db
 from models.usuario import Usuario, TipoUsuario
@@ -13,6 +13,9 @@ from models.instituicao import Instituicao
 from playhouse.shortcuts import model_to_dict
 
 from util import campos_presentes_na_requisicao
+from util.erro import Erro, gerar_erro_campo_invalido, gerar_erro_campo_obrigatorio
+
+from datetime import datetime
 
 import hashlib
 
@@ -21,64 +24,94 @@ def senha_hasheada(senha):
     md5 = hashlib.md5()
     md5.update(senha.encode('utf-8'))
 
-    return md5.digest()
+    return str(md5.digest())
+
+
+@app.route('/')
+def pagina_inicial():
+    saudacao = ''
+    if datetime.now().hour < 12:
+        saudacao = 'Bom dia'
+    elif datetime.now().hour > 12 and datetime.now().hour < 18:
+        saudacao = 'Boa tarde'
+    else:
+        saudacao = 'Boa noite'
+    
+    return render_template('usuario/index.html', saudacao=saudacao)
+
+
+@app.route('/login')
+def pagina_login():
+    if session['usuario']:
+        return redirect(url_for('pagina_inicial'))
+    
+    return render_template('usuario/login.html')
 
 
 @app.route('/login', methods=['POST'])
 def login():
     erros = campos_presentes_na_requisicao('email senha')
-    
-    if erros: return jsonify(erros), 400
 
-    email = request.json['email']
-    senha = request.json['senha']
+    if erros:
+        return render_template('usuario/login.html', erros=erros), 400
+
+    email = request.form.get('email')
+    senha = request.form.get('senha')
 
     try:
         usuario = Usuario.get(email=email)
 
         if usuario.hash_senha == senha_hasheada(senha):
-            token = jwt.encode({'nome': usuario.nome, 'id': usuario.id }, app.secret_key, algorithm='HS256')
+            session['usuario'] = model_to_dict(usuario)
 
-            return jsonify({'mensagem': 'Usuário logado com sucesso.', 'token': token.decode('utf-8') })
+            flash(
+                'Seja bem-vindo, {usuario}.'.format(usuario=usuario.nome.split()[0]))
+            return redirect(url_for('pagina_inicial'))
         else:
-            return jsonify({'mensagem': 'Senha inválida.'}), 400
+            return render_template('usuario/login.html', erros=[Erro('Senha inválida.')]), 400
 
     except Usuario.DoesNotExist:
-        return jsonify({'mensagem': 'Usuário não encontrado.'}), 404
+        return render_template('usuario/login.html', erros=[{'mensagem': 'Usuário não encontrado.'}]), 404
+
+
+@app.route('/logout')
+def deslogar():
+    session.clear()
+    return redirect(url_for('pagina_inicial'))
 
 
 def cadastrar_professor(usuario):
-    nome_instituicao = request.json['nome_instituicao'] if 'nome_instituicao' in request.json else None
+    nome_instituicao = request.form['nome_instituicao'] if 'nome_instituicao' in request.form else None
 
     if not nome_instituicao:
-        return jsonify({'mensagem': 'Campo "nome_instituicao" obrigatório.'}), 400
+        return gerar_erro_campo_obrigatorio("nome_instituicao"), 400
 
     instituicao = Instituicao.select().where(
-        Instituicao.nome % '%{}%'.format(nome_instituicao))
-        
+        Instituicao.nome % nome_instituicao)
+
     if len(instituicao) == 0:
         instituicao = Instituicao.create(nome=nome_instituicao)
 
     Professor.create(usuario=usuario, instituicao=instituicao)
 
-    return jsonify({'mensagem': 'Professor cadastrado com sucesso.'}), 200
+    return 'Professor cadastrado com sucesso.', 200
 
 
 def cadastrar_estudante(usuario):
-    nome_instituicao = request.json['nome_instituicao'] if 'nome_instituicao' in request.json else None
+    nome_instituicao = request.form['nome_instituicao'] if 'nome_instituicao' in request.form else None
 
     if not nome_instituicao:
-        return jsonify({'mensagem': 'Campo "nome_instituicao" obrigatório.'}), 400
+        return gerar_erro_campo_obrigatorio("nome_instituicao"), 400
 
     try:
-        instituicao = Instituicao.select().where(
-            Instituicao.nome % '%{}%'.format(nome_instituicao))
+        instituicao = Instituicao.get(
+            Instituicao.nome % nome_instituicao)
     except Instituicao.DoesNotExist:
         instituicao = Instituicao.create(nome=nome_instituicao)
 
     Estudante.create(usuario=usuario, instituicao=instituicao)
 
-    return jsonify({'mensagem': 'Estudante cadastrado com sucesso.'}), 200
+    return 'Estudante cadastrado com sucesso.', 200
 
 
 cadastrar = {}
@@ -86,45 +119,46 @@ cadastrar[TipoUsuario.ESTUDANTE] = cadastrar_estudante
 cadastrar[TipoUsuario.PROFESSOR] = cadastrar_professor
 
 
+@app.route('/cadastro')
+def pagina_cadastro():
+    if session['usuario']:
+        return redirect(url_for('pagina_inicial'))
+    
+    return render_template('usuario/cadastro.html')
+
+
 @app.route('/cadastro', methods=['POST'])
 def cadastro():
     erros = campos_presentes_na_requisicao('nome email senha tipo_usuario')
-    
-    if erros: return jsonify(erros), 400
 
-    nome = request.json['nome'] 
-    email = request.json['email'] 
-    senha = request.json['senha'] 
-    tipo_usuario = request.json['tipo_usuario']
+    if erros:
+        return render_template('usuario/cadastro.html', erros=erros), 400
 
-    try:
-        tipo_usuario = TipoUsuario(tipo_usuario)
-    except ValueError:
-        return jsonify({'mensagem': 'Campo "tipo_usuario" inválido.'}), 400
+    nome = request.form.get('nome')
+    email = request.form.get('email')
+    senha = request.form.get('senha')
+    tipo_usuario = int(request.form.get('tipo_usuario'))
 
     # Cadastrar usuário
     with db.atomic() as transacao:
-        novo_usuario = Usuario.create(nome=nome, email=email,
+        novo_usuario = Usuario.create(nome=nome, email=email, tipo_usuario=tipo_usuario,
                                       hash_senha=senha_hasheada(senha))
 
         # Criar professor ou aluno, dependendo do tipo_usuario
         try:
-            resposta, codigo = cadastrar[tipo_usuario](novo_usuario)
+            resposta, codigo = cadastrar[TipoUsuario(
+                tipo_usuario)](novo_usuario)
             if codigo != 200:
                 db.rollback()
 
-            return resposta, codigo
+            flash(resposta)
+            session['usuario'] = model_to_dict(novo_usuario)
+
+            return redirect(url_for('pagina_inicial')), codigo
+
         except Exception as e:
             db.rollback()
-
-            return jsonify({'mensagem': 'Erro ao cadastrar usuário.'}), 500
-
-
-@app.route('/esqueceu_senha')
-def esqueceu_senha():
-    pass
-
-
-@app.route('/apagar_conta')
-def apagar_conta():
-    pass
+            print(e)
+            flash(
+                'Algo de errado aconteceu ao cadastrar o usuário. Por favor, tente mais tarde.')
+            return render_template('usuario/cadastro.html'), 500

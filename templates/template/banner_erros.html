@@ -1,0 +1,7 @@
+<!-- Banner de erros -->
+
+{% for erro in erros %}
+<section class="alert alert-danger">
+    {{ erro.mensagem | safe }}
+</section>
+{% endfor %}

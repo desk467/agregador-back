@@ -1,0 +1,44 @@
+{% extends 'template/index.html' %}
+
+{% block content %}
+
+{% if erros %}
+    {% include 'template/banner_erros.html' %}
+{% endif %}
+
+<form method="POST">
+    <div class="form-group">
+        <label for="nome">Nome de usuário:</label>
+        <input class="form-control" type="text" name="nome" id="nome" placeholder="O nome que você será identificado neste site.">
+    </div>
+
+    <div class="form-group">
+        <label for="email">E-mail:</label>
+        <input class="form-control" type="text" name="email" id="email" placeholder="Ex.: jose@teste.com">
+    </div>
+    <div class="form-group">
+        <label for="senha">Senha:</label>
+        <input class="form-control" type="password" name="senha" id="senha" placeholder="Mínimo de 6 caracteres">
+    </div>
+    <div class="form-group">
+        <label for="senha_repetida">Por favor, repita a senha:</label>
+        <input class="form-control" type="password" name="senha_repetida" id="senha_repetida">
+    </div>
+    <div class="form-group radio-group">
+        <label for="tipo_usuario">Você é:</label>
+        <br>
+        <label class="radio-item">
+            <input type="radio" name="tipo_usuario" id="tipo_usuario" value="1"> Professor
+        </label>
+        <label class="radio-item">
+            <input type="radio" name="tipo_usuario" id="tipo_usuario" value="2"> Estudante
+        </label>
+    </div>
+    <div class="form-group">
+        <label for="nome_instituicao">Nome da sua instituição:</label>
+        <input type="text" class="form-control" name="nome_instituicao" id="nome_instituicao" placeholder="Onde você estuda/ensina">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Cadastrar">
+</form>
+
+{% endblock %}

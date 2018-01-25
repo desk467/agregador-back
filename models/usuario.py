@@ -10,11 +10,12 @@ from enum import Enum
 
 from models import BaseModel
 from models.instituicao import Instituicao
-from peewee import CharField, ForeignKeyField
+from peewee import CharField, ForeignKeyField, IntegerField
 
 TipoUsuario = Enum('TipoUsuario', 'PROFESSOR ESTUDANTE')
 
 class Usuario(BaseModel):
     nome = CharField()
+    tipo_usuario = IntegerField()
     email = CharField(max_length=100)
     hash_senha = CharField(max_length=128)
