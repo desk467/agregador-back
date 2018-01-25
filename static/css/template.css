@@ -4,6 +4,10 @@
     line-height: 2em;
 }
 
+.com-margem {
+    margin: .75em .25em;
+}
+
 .espaco {
     padding: 8.5em;
 }

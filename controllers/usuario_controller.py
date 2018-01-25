@@ -26,8 +26,11 @@ def senha_hasheada(senha):
 
     return str(md5.digest())
 
-
 @app.route('/')
+def ir_para_inicio():
+    return redirect(url_for('pagina_inicial'))
+
+@app.route('/inicio')
 def pagina_inicial():
     saudacao = ''
     if datetime.now().hour < 12:
@@ -42,7 +45,7 @@ def pagina_inicial():
 
 @app.route('/login')
 def pagina_login():
-    if session['usuario']:
+    if 'usuario' in session:
         return redirect(url_for('pagina_inicial'))
     
     return render_template('usuario/login.html')
@@ -121,7 +124,7 @@ cadastrar[TipoUsuario.PROFESSOR] = cadastrar_professor
 
 @app.route('/cadastro')
 def pagina_cadastro():
-    if session['usuario']:
+    if 'usuario' in session:
         return redirect(url_for('pagina_inicial'))
     
     return render_template('usuario/cadastro.html')
@@ -154,7 +157,7 @@ def cadastro():
             flash(resposta)
             session['usuario'] = model_to_dict(novo_usuario)
 
-            return redirect(url_for('pagina_inicial')), codigo
+            return redirect(url_for('pagina_inicial'))
 
         except Exception as e:
             db.rollback()

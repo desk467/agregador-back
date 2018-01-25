@@ -1,25 +1,30 @@
 {% extends 'template/index.html' %} {% block content %}
 
-<form method="POST">
-    <div class="form-group">
-        <label for="email">E-mail</label>
-        <input class="form-control" type="text" name="email" id="email">
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form method="POST">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input class="form-control" type="text" name="email" id="email">
+            </div>
+        
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input class="form-control" type="password" name="senha" id="senha">
+            </div>
+        
+            <input type="submit" value="Entrar" class="btn btn-primary">
+        </form>
+        
+        {% if erros %}
+            {% include 'template/banner_erros.html' %}
+        {% endif %}
+        
+        <br>
+        <p>Ainda não possui conta ? <a href="/cadastro">Cadastre-se agora mesmo.</a></p>
     </div>
-
-    <div class="form-group">
-        <label for="senha">Senha:</label>
-        <input class="form-control" type="password" name="senha" id="senha">
-    </div>
-
-    <input type="submit" value="Entrar" class="btn btn-primary">
-</form>
+</div>
 <br>
 
-{% if erros %}
-    {% include 'template/banner_erros.html' %}
-{% endif %}
-
-<br>
-<p>Ainda não possui conta ? <a href="/cadastro">Cadastre-se agora mesmo.</a></p>
 
 {% endblock %}
