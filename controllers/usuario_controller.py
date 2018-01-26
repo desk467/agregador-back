@@ -12,8 +12,9 @@ from models.instituicao import Instituicao
 
 from playhouse.shortcuts import model_to_dict
 
-from util import campos_presentes_na_requisicao
+from util import campos_presentes_na_requisicao, usuario
 from util.erro import Erro, gerar_erro_campo_invalido, gerar_erro_campo_obrigatorio
+from util.professor import is_professor, disciplinas, injetar_professor
 
 from datetime import datetime
 
@@ -40,8 +41,13 @@ def pagina_inicial():
     else:
         saudacao = 'Boa noite'
     
-    return render_template('usuario/index.html', saudacao=saudacao)
+    def renderizar_pagina_professor(professor):
+        return render_template('usuario/index.html', saudacao=saudacao, disciplinas=disciplinas(professor))
 
+    if is_professor(usuario()):
+        renderizar_pagina_professor = injetar_professor(renderizar_pagina_professor)
+        
+        return renderizar_pagina_professor()
 
 @app.route('/login')
 def pagina_login():

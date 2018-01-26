@@ -1,0 +1,33 @@
+{% extends 'template/index.html' %}
+
+{% block content %}
+
+<h1>criar uma nova disciplina</h1>
+<hr class="linha-verde">
+<h3>Uma disciplina é o local onde serão postadas as atividades e atualizações das disciplinas.</h3>
+
+{% if erros %}
+    <h3>Ocorreu um erro ao criar a disciplina.</h3>
+    {% include 'template/banner_erros.html' %}
+{% endif %}
+
+<br>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="instituicao">Você está criando uma nova disciplina para a instituição:</label>
+        <strong>{{ instituicao }}</strong>
+    </div>
+    <div class="form-group">
+        <label for="nome">Nome da disciplina:</label>
+        <input name="nome" type="text" class="form-control" placeholder="Ex.: Matemática Discreta">
+    </div>
+    <div class="form-group">
+        <label for="descricao">Descrição da disciplina:</label>
+        <textarea rows="6" name="descricao" class="form-control" placeholder="Faça um breve resumo sobre a disciplina, para que facilite o ingresso dos estudantes."></textarea>
+    </div>
+
+    <input type="submit" value="Criar disciplina" class="btn btn-primary">
+</form>
+
+{% endblock %}

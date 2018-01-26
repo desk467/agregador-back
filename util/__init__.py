@@ -24,4 +24,4 @@ def campos_presentes_na_requisicao(campos):
 
 
 def usuario():
-    return Usuario.get(Usuario.id == session['usuario_id'])
+    return Usuario.get(Usuario.id == session['usuario']['id'])

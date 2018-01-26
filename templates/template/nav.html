@@ -3,17 +3,12 @@
 <nav class="navbar navbar-expand-sm">
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="navbar-brand" href="/">stodo</a>
+            <a class="navbar-brand" href="/inicio">stodo</a>
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">
 
         {% if session.usuario %}
-        <a href="/inicio">
-            <li class="nav-item btn btn-focused">
-                Acessar a área do {{ 'estudante' if session.usuario.tipo_usuario == 2 else 'professor' }} de {{ session.usuario.nome }}
-            </li>
-        </a>
         <li class="nav-item">
             <a class="nav-link" href="/logout">Sair</a>
         </li>

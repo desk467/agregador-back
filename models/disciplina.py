@@ -18,11 +18,3 @@ class Disciplina(BaseModel):
     nome = CharField()
     descricao = TextField()
     instituicao = ForeignKeyField(Instituicao)
-
-    @property
-    def alunos_inscritos():
-        return []
-    
-    @property
-    def atividades():
-        return []

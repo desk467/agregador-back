@@ -8,50 +8,46 @@ Conterá serviços de:
 - CRUD de Atividade
 '''
 
-from flask import jsonify
+from flask import request, render_template, redirect, flash, url_for
 from playhouse.shortcuts import model_to_dict
 from app import app
 from functools import wraps
 
 from models.professor import Professor
 from models.disciplina import Disciplina
-from util import usuario
-
-# Decorators úteis para o controller
-
-def injetar_professor(handler):
-    '''
-    professor_existe
-    Verifica se o usuário atual existe como um professor
-    '''
-    def wrapper(*args, **kwargs):
-        try:
-            professor = Professor.get(Professor.usuario == usuario())
-        except Professor.DoesNotExist:
-            return jsonify({'mensagem': 'Professor não encontrado.'}), 404
-
-        return handler(professor, *args, **kwargs)
-
-    wrapper.__name__ = handler.__name__
-
-    return wrapper
+from util import usuario, campos_presentes_na_requisicao
+from util.professor import injetar_professor, disciplinas
 
 
-@app.route('/professor/info')
+@app.route('/disciplina/criar')
+def pagina_criar_disciplina():
+    professor = Professor.get(Professor.usuario == usuario())
+    instituicao = professor.instituicao.nome
+
+    return render_template('professor/criar_disciplina.html', instituicao=instituicao)
+
+
+@app.route('/disciplinas')
 @injetar_professor
-def get_professor(professor):
-    return jsonify(model_to_dict(professor))
+def pagina_disciplinas(professor):
+    return render_template('professor/pagina_disciplinas.html', disciplinas=disciplinas(professor))
 
 
-@app.route('/professor/disciplina')
+@app.route('/disciplina/criar', methods=['POST'])
 @injetar_professor
-def get_disciplinas(professor):
-    disciplinas = Disciplina.select().where(Disciplina.professor == professor)
+def criar_disciplina(professor):
+    erros = campos_presentes_na_requisicao('nome descricao')
 
-    return jsonify([model_to_dict(disciplina) for disciplina in disciplinas])
+    if erros:
+        return render_template('professor/criar_disciplina.html', erros=erros), 400
 
-@app.route('/professor/disciplina')
-@injetar_professor
-def criar_disciplina(professor, methods=['POST']):
-    return 'Ok'
+    nome = request.form.get('nome')
+    descricao = request.form.get('descricao')
 
+    disciplina = Disciplina.create(
+        nome=nome, descricao=descricao, professor=professor, instituicao=professor.instituicao)
+
+    flash('Disciplina {disciplina} criada com sucesso.'.format(
+        disciplina=disciplina.nome))
+
+    return redirect(url_for('pagina_disciplinas'))
