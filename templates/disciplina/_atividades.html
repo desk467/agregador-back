@@ -25,8 +25,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Editar atividade</button>
-                <button type="button" class="btn btn-danger">Excluir atividade</button>
+                <a href="#" id="editar-atividade" class="btn btn-primary">Editar atividade</a>
+                <a href="#" id="excluir-atividade" class="btn btn-danger">Excluir atividade</a>
             </div>
 
         </div>
@@ -36,7 +36,12 @@
 <script>
     $(document).ready(function(){
         $('.atividade').click(function(){
-            $('#modal-atividade .modal-body').load('/atividade/' + $(this).data('atividade'))
+            var atividade = $(this).data('atividade')
+            
+            $('#modal-atividade .modal-body').load('/atividade/' + atividade, function() {
+                $('#editar-atividade').attr('href', '/atividade/' + atividade + '/editar')
+                $('#excluir-atividade').attr('href', '/atividade/' + atividade + '/excluir')
+            })
         })
     })
 </script>

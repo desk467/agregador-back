@@ -1,0 +1,38 @@
+{% extends 'template/index.html' %}
+
+{% block content %}
+
+<h1>editar '{{atividade.nome}}'</h1>
+<hr class="linha-verde">
+
+{% if erros %}
+    <h3>Ocorreu um erro ao editar a atividade.</h3>
+    {% include 'template/banner_erros.html' %}
+{% endif %}
+
+<br>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="disciplina">Disciplina:</label>
+        <strong>{{ atividade.disciplina.nome }}</strong>
+    </div>
+
+    <div class="form-group">
+        <label for="nome">Nome da atividade:</label>
+        <input name="nome" type="text" class="form-control" placeholder="Ex.: Trabalho sobre Padrões de Projeto" value="{{atividade.nome}}">
+    </div>
+    <div class="form-group">
+        <label for="descricao">Descrição da atividade:</label>
+        <textarea rows="6" name="descricao" class="form-control" placeholder="Faça um breve resumo sobre a atividade.">{{atividade.descricao}}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="data">Data da atividade:</label>
+        <input value="{{atividade.data}}" placeholder="Ex.: 07/02/2018" name="data" data-provide="datepicker" class="form-control datepicker data">
+    </div>
+
+    <input type="submit" value="Salvar alterações" class="btn btn-primary">
+</form>
+
+{% endblock %}

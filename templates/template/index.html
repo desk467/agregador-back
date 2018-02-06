@@ -20,7 +20,7 @@
         {% with mensagens = get_flashed_messages() %}
         {% if mensagens %}
             {% for mensagem in mensagens %}
-                <div class="alert alert-success">{{ mensagem }}</div>
+                <div class="alert alert-success">{{ mensagem | safe }}</div>
             {% endfor %}
         {% endif %}
         {% endwith %}

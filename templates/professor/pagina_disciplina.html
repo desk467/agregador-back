@@ -9,9 +9,9 @@
         </div>
 
         <div class="col-md-2">
-            <a href="/disciplina/criar" class="btn btn-primary">Criar nova atividade</a>
-            <div class="btn">Editar disciplina</div>
-            <div class="btn text-danger">Excluir disciplina</div>
+            <a href="/disciplina/{{disciplina.id}}/atividade/criar" class="btn btn-primary">Criar nova atividade</a>
+            <a href="/disciplina/{{disciplina.id}}/editar" class="btn">Editar disciplina</a>
+            <a href="/disciplina/{{disciplina.id}}/excluir" class="btn text-danger">Excluir disciplina</a>
         </div>
     </div>
     <h3>{{ disciplina.descricao }}</h3>

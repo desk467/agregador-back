@@ -1,0 +1,32 @@
+{% extends 'template/index.html' %}
+
+{% block content %}
+
+<h1>editar disciplina '{{ disciplina.nome }}'</h1>
+<hr class="linha-verde">
+
+{% if erros %}
+    <h3>Ocorreu um erro ao editar a disciplina.</h3>
+    {% include 'template/banner_erros.html' %}
+{% endif %}
+
+<br>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="instituicao">Instituição:</label>
+        <strong>{{ disciplina.instituicao }}</strong>
+    </div>
+    <div class="form-group">
+        <label for="nome">Nome da disciplina:</label>
+        <input name="nome" type="text" class="form-control" placeholder="Ex.: Matemática Discreta" value="{{disciplina.nome}}">
+    </div>
+    <div class="form-group">
+        <label for="descricao">Descrição da disciplina:</label>
+        <textarea rows="6" name="descricao" class="form-control" placeholder="Faça um breve resumo sobre a disciplina, para que facilite o ingresso dos estudantes.">{{ disciplina.descricao }}</textarea>
+    </div>
+
+    <input type="submit" value="Salvar alterações" class="btn btn-primary">
+</form>
+
+{% endblock %}
