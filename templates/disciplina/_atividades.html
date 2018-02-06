@@ -1,0 +1,42 @@
+{% if atividades %}
+
+{% for atividade in atividades %}
+    <a data-toggle="modal" data-target="#modal-atividade" href="#" class="atividade" data-atividade="{{atividade.id}}">
+        <h3>{{ atividade.nome }}</h3>
+    </a>
+{% endfor %}
+
+{% else %}
+    <h4>Parece que você ainda não cadastrou nenhuma atividade.
+        <a href="/disciplina/{{disciplina.id}}/atividade/criar">Comece criando uma nova atividade.</a>
+    </h4>
+{% endif %}
+
+<div class="modal fade" id="modal-atividade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Dados da atividade</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- _atividade.html -->
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Editar atividade</button>
+                <button type="button" class="btn btn-danger">Excluir atividade</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('.atividade').click(function(){
+            $('#modal-atividade .modal-body').load('/atividade/' + $(this).data('atividade'))
+        })
+    })
+</script>

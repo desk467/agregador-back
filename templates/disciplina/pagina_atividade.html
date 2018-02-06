@@ -1,0 +1,15 @@
+<!-- Página da atividade -->
+{% include 'template/css.html' %}
+
+<div class="container container-fluid pagina-atividade">
+    <h1>{{ atividade.nome }}</h1>
+    
+    <div class="linha-verde"></div>
+    
+    <p>{{ atividade.descricao }}</p>
+    
+    <div class="data-entrega">
+        <strong>Data de entrega: </strong>
+        <p>{{ atividade.data }}</p>
+    </div>
+</div>

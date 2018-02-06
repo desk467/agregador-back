@@ -1,0 +1,39 @@
+{% extends 'template/index.html' %}
+
+{% block content %}
+
+<h1>criar uma nova atividade</h1>
+<hr class="linha-verde">
+<h3>Uma atividade representa algo que o estudante deve fazer em aula presencial</h3>
+
+{% if erros %}
+    <h3>Ocorreu um erro ao criar a atividade.</h3>
+    {% include 'template/banner_erros.html' %}
+{% endif %}
+
+<br>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="disciplina">Você está criando uma nova atividade para a disciplina:</label>
+        <strong>{{ disciplina }}</strong>
+    </div>
+
+    <div class="form-group">
+        <label for="nome">Nome da atividade:</label>
+        <input name="nome" type="text" class="form-control" placeholder="Ex.: Trabalho sobre Padrões de Projeto">
+    </div>
+    <div class="form-group">
+        <label for="descricao">Descrição da atividade:</label>
+        <textarea rows="6" name="descricao" class="form-control" placeholder="Faça um breve resumo sobre a atividade."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="data">Data da atividade:</label>
+        <input name="data" data-provide="datepicker" class="form-control datepicker data">
+    </div>
+
+    <input placeholder="Ex.: 07/02/2018" type="submit" value="Criar atividade" class="btn btn-primary">
+</form>
+
+{% endblock %}

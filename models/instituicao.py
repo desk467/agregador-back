@@ -14,3 +14,6 @@ from peewee import CharField, TextField
 class Instituicao(BaseModel):
     nome = CharField()
     descricao = TextField(null=True)
+
+    def __str__(self):
+        return self.nome

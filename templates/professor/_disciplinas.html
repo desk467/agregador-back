@@ -1,10 +1,14 @@
 {% if disciplinas %}
 
-{% for disciplina in disciplinas %}
+<ul>
+    {% for disciplina in disciplinas %}
     <a href="/disciplina/{{disciplina.id}}" class="disciplina">
-        <h3>{{ disciplina.nome }}</h3>
+        <li>
+            <h3>{{ disciplina.nome }}</h3>
+        </li>
     </a>
-{% endfor %}
+    {% endfor %}
+</ul>
 
 {% else %}
     <h4>Parece que você ainda não cadastrou nenhuma disciplina.

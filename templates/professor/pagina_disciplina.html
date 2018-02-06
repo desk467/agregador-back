@@ -1,0 +1,26 @@
+{% extends 'template/index.html' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-10">
+            <h1> {{ disciplina.nome }} </h1>
+            <hr class="linha-verde">
+        </div>
+
+        <div class="col-md-2">
+            <a href="/disciplina/criar" class="btn btn-primary">Criar nova atividade</a>
+            <div class="btn">Editar disciplina</div>
+            <div class="btn text-danger">Excluir disciplina</div>
+        </div>
+    </div>
+    <h3>{{ disciplina.descricao }}</h3>
+    <p>Disciplina criada por {{disciplina.professor.usuario.nome}}.</p>
+    <br>
+    <hr>
+    <h2>Atividades da disciplina</h2>
+    <hr class="linha-verde">
+    
+    {% include 'disciplina/_atividades.html' %}
+
+{% endblock %}

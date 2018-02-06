@@ -15,6 +15,7 @@ from playhouse.shortcuts import model_to_dict
 from util import campos_presentes_na_requisicao, usuario
 from util.erro import Erro, gerar_erro_campo_invalido, gerar_erro_campo_obrigatorio
 from util.professor import is_professor, disciplinas, injetar_professor
+from util.estudante import is_estudante
 
 from datetime import datetime
 
@@ -27,33 +28,31 @@ def senha_hasheada(senha):
 
     return str(md5.digest())
 
+
 @app.route('/')
 def ir_para_inicio():
     return redirect(url_for('pagina_inicial'))
 
+@injetar_professor
+def renderizar_pagina_professor(professor):
+    return render_template('usuario/index.html', disciplinas=disciplinas(professor))
+
+
 @app.route('/inicio')
 def pagina_inicial():
-    saudacao = ''
-    if datetime.now().hour < 12:
-        saudacao = 'Bom dia'
-    elif datetime.now().hour > 12 and datetime.now().hour < 18:
-        saudacao = 'Boa tarde'
-    else:
-        saudacao = 'Boa noite'
-    
-    def renderizar_pagina_professor(professor):
-        return render_template('usuario/index.html', saudacao=saudacao, disciplinas=disciplinas(professor))
-
     if is_professor(usuario()):
-        renderizar_pagina_professor = injetar_professor(renderizar_pagina_professor)
-        
         return renderizar_pagina_professor()
+    elif is_estudante(usuario()):
+        pass
+    else:
+        return render_template('usuario/index.html')
+
 
 @app.route('/login')
 def pagina_login():
     if 'usuario' in session:
         return redirect(url_for('pagina_inicial'))
-    
+
     return render_template('usuario/login.html')
 
 
@@ -132,7 +131,7 @@ cadastrar[TipoUsuario.PROFESSOR] = cadastrar_professor
 def pagina_cadastro():
     if 'usuario' in session:
         return redirect(url_for('pagina_inicial'))
-    
+
     return render_template('usuario/cadastro.html')
 
 

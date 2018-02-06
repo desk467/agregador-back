@@ -15,11 +15,3 @@ from peewee import CharField, ForeignKeyField
 class Estudante(BaseModel):
     usuario = ForeignKeyField(Usuario)
     instituicao = ForeignKeyField(Instituicao)
-
-    @property
-    def inscricoes(self):
-        return []
-
-    @property
-    def atividades(self):
-        return []

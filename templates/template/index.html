@@ -5,16 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,700"> 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/template.css') }}">
+    {% include 'template/css.html' %}
     
     <title>stodo {% block titulo %} {% endblock %}</title>
 </head>
 
 <body>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+
     {% include 'template/nav.html' %}
 
     <div class="mensagens-sucesso">
@@ -33,8 +32,17 @@
     
     {% include 'template/footer.html' %}
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-datepicker.pt-BR.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                language: 'pt-BR'
+            })
+        })
+    </script>
 </body>
 
 </html>

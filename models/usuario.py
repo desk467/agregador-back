@@ -19,3 +19,6 @@ class Usuario(BaseModel):
     tipo_usuario = IntegerField()
     email = CharField(max_length=100)
     hash_senha = CharField(max_length=128)
+
+    def __str__(self):
+        return self.nome

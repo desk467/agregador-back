@@ -3,7 +3,7 @@
 {% block content %}
 <div class="jumbotron">
     {% if session.usuario %}
-        <h1>{{ saudacao }}, {{ session.usuario.nome }}.</h1>
+        <h1>Olá, {{ session.usuario.nome }}.</h1>
         <hr>
         {% if session.usuario.tipo_usuario == 1 %}
             {% include 'usuario/area_professor.html' %}

@@ -18,3 +18,6 @@ class Disciplina(BaseModel):
     nome = CharField()
     descricao = TextField()
     instituicao = ForeignKeyField(Instituicao)
+
+    def __str__(self):
+        return self.nome

@@ -17,3 +17,6 @@ class Atividade(BaseModel):
     nome = CharField()
     descricao = TextField()
     data = DateField()
+
+    def __str__(self):
+        return self.nome
