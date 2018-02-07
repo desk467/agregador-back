@@ -8,11 +8,15 @@
             <hr class="linha-verde">
         </div>
 
+        {% if is_professor %}
         <div class="col-md-2">
             <a href="/disciplina/{{disciplina.id}}/atividade/criar" class="btn btn-primary">Criar nova atividade</a>
             <a href="/disciplina/{{disciplina.id}}/editar" class="btn">Editar disciplina</a>
             <a href="/disciplina/{{disciplina.id}}/excluir" class="btn text-danger">Excluir disciplina</a>
         </div>
+        {% elif is_estudante %}
+            <span class="btn assinar"><i class="fa fa-rss-square"></i> Assinar</span>
+        {% endif %}
     </div>
     <h3>{{ disciplina.descricao }}</h3>
     <p>Disciplina criada por {{disciplina.professor.usuario.nome}}.</p>

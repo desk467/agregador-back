@@ -8,6 +8,7 @@ from models import db
 from models.usuario import Usuario, TipoUsuario
 from models.professor import Professor
 from models.estudante import Estudante
+from models.disciplina import Disciplina
 from models.instituicao import Instituicao
 
 from playhouse.shortcuts import model_to_dict
@@ -33,17 +34,18 @@ def senha_hasheada(senha):
 def ir_para_inicio():
     return redirect(url_for('pagina_inicial'))
 
-@injetar_professor
-def renderizar_pagina_professor(professor):
-    return render_template('usuario/index.html', disciplinas=disciplinas(professor))
-
 
 @app.route('/inicio')
 def pagina_inicial():
     if is_professor(usuario()):
-        return renderizar_pagina_professor()
+        professor = Professor.get(Professor.usuario == usuario())
+        return render_template('usuario/index.html', disciplinas=disciplinas(professor))
     elif is_estudante(usuario()):
-        pass
+        estudante = Estudante.get(Estudante.usuario == usuario())
+        disciplinas_disponiveis = [disciplina for disciplina in Disciplina.select().where(
+            Disciplina.instituicao == estudante.instituicao)]
+
+        return render_template('usuario/index.html', estudante=estudante, disciplinas_disponiveis=disciplinas_disponiveis)
     else:
         return render_template('usuario/index.html')
 

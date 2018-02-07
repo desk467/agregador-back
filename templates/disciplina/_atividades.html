@@ -1,16 +1,12 @@
-{% if atividades %}
-
 {% for atividade in atividades %}
     <a data-toggle="modal" data-target="#modal-atividade" href="#" class="atividade" data-atividade="{{atividade.id}}">
         <h3>{{ atividade.nome }}</h3>
     </a>
-{% endfor %}
-
 {% else %}
     <h4>Parece que você ainda não cadastrou nenhuma atividade.
         <a href="/disciplina/{{disciplina.id}}/atividade/criar">Comece criando uma nova atividade.</a>
     </h4>
-{% endif %}
+{% endfor %}
 
 <div class="modal fade" id="modal-atividade">
     <div class="modal-dialog modal-lg">

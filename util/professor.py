@@ -12,12 +12,12 @@ def is_professor(usuario):
     '''
     Retorna True se usuario é um professor.
     '''
+
     try:
         Professor.get(Professor.usuario == usuario)
         return True
     except Professor.DoesNotExist as ex:
         return False
-
 
 def injetar_professor(handler):
     '''

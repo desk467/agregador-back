@@ -173,6 +173,52 @@ a.btn-focused  {
     margin-left: 0em;
 }
 
+.linha-pontilhada {
+    border: none;
+    border-bottom: 3px dashed rgba(0, 0, 0, 0.25);
+    margin: 1em 0;
+}
+
 .pagina-atividade {
     padding: 1em;
+}
+
+.campo-pesquisa {
+    margin: 1em 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: .5em 0;
+}
+
+.campo-pesquisa > * {
+    margin: 0 .5em;
+}
+
+.aluno-disciplina {
+    padding: .25em 1em;
+    border-radius: 4px;
+
+    background: rgba(29, 95, 182, 0.5);
+    border: 1px solid rgba(29, 95, 182, 0.75);
+
+    color: #EEE;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.aluno-disciplina a {
+    text-decoration: none;
+    color: #EEE;
+}
+
+.aluno-disciplina .btn {
+    background: #EEE;
+    font-weight: 700;
+    margin: .25em;
+
+    color: rgba(29, 95, 182, 0.5);
 }

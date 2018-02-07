@@ -18,7 +18,8 @@ from models.professor import Professor
 from models.disciplina import Disciplina
 from models.atividade import Atividade
 from util import usuario, campos_presentes_na_requisicao
-from util.professor import injetar_professor, disciplinas
+from util.professor import injetar_professor, disciplinas, is_professor
+from util.estudante import is_estudante
 
 
 @app.route('/disciplina/criar')
@@ -37,7 +38,7 @@ def pagina_disciplina(id_disciplina):
         atividades = [model_to_dict(atividade) for atividade in Atividade.select(
         ).where(Atividade.disciplina == disciplina)]
 
-        return render_template('professor/pagina_disciplina.html', disciplina=model_to_dict(disciplina), atividades=atividades)
+        return render_template('professor/pagina_disciplina.html', disciplina=model_to_dict(disciplina), atividades=atividades, is_professor=is_professor(usuario()), is_estudante=is_estudante(usuario()))
     except Disciplina.DoesNotExist:
         return render_template('erros/404.html'), 404
 
@@ -169,6 +170,7 @@ def pagina_atividade(id_atividade):
     except Atividade.DoesNotExist:
         return render_template('erros/404.html'), 404
 
+
 @app.route('/atividade/<id_atividade>/editar')
 def pagina_editar_atividade(id_atividade):
     try:
@@ -179,6 +181,7 @@ def pagina_editar_atividade(id_atividade):
         return render_template('disciplina/editar_atividade.html', atividade=atividade)
     except Atividade.DoesNotExist:
         return render_template('erros/404.html'), 404
+
 
 @app.route('/atividade/<id_atividade>/editar', methods=['POST'])
 @injetar_professor
@@ -208,6 +211,7 @@ def editar_atividade(professor, id_atividade):
             return render_template('erros/401.html'), 401
     except atividade.DoesNotExist:
         return render_template('erros/404.html'), 404
+
 
 @app.route('/atividade/<id_atividade>/excluir')
 @injetar_professor

@@ -1,7 +1,29 @@
-<h3>Aqui está seu cronograma:</h3>
+<div class="row">
+    <div class="col-md-8">
+        <h3>pesquisar disciplinas da sua instituição:</h3>
+        <div class="linha-verde"></div>
+        <form class="campo-pesquisa" action="/pesquisar_disciplina" method="get">
+            <input placeholder="Ex.: Química" type="text" class="form-control" name="nome"/>
+            <input type="submit" class="btn btn-primary" value="Pesquisar"/>
+        </form>
+        <div class="linha-pontilhada"></div>
+        <h4>Disciplinas disponíveis para a instituição '{{estudante.instituicao}}'</h4>
 
-<!-- <h4>Segunda-feira</h4>
-<h4>Terça-feira</h4>
-<h4>Quarta-feira</h4>
-<h4>Quinta-feira</h4>
-<h4>Sexta-feira</h4> -->
+        {% for disciplina in disciplinas_disponiveis %}
+        <div class="aluno-disciplina">
+            <a href="/disciplina/{{disciplina.id}}">
+                <span class="nome">{{disciplina.nome}}</span>
+            </a>
+            <span class="btn assinar"><i class="fa fa-rss-square"></i> Assinar</span>
+            </div>
+        {% else %}
+        <h4>A sua instituição ainda não tem disciplinas cadastradas em nosso site.</h4>
+        {% endfor %}
+    </div>
+    
+    <div class="col-md-4">
+        <h3>cronograma:</h3>
+        <div class="linha-verde"></div>
+        <p>Em desenvolvimento</p>
+    </div>
+</div>
