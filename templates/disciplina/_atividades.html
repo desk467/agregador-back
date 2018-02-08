@@ -3,9 +3,13 @@
         <h3>{{ atividade.nome }}</h3>
     </a>
 {% else %}
+    {% if is_professor %}
     <h4>Parece que você ainda não cadastrou nenhuma atividade.
         <a href="/disciplina/{{disciplina.id}}/atividade/criar">Comece criando uma nova atividade.</a>
     </h4>
+    {% else %}
+    <h4>O professor da disciplina ainda não cadastrou nenhuma atividade.</h4>
+    {% endif %}
 {% endfor %}
 
 <div class="modal fade" id="modal-atividade">
@@ -20,10 +24,12 @@
                 <!-- _atividade.html -->
             </div>
 
+            {% if is_professor %}
             <div class="modal-footer">
                 <a href="#" id="editar-atividade" class="btn btn-primary">Editar atividade</a>
                 <a href="#" id="excluir-atividade" class="btn btn-danger">Excluir atividade</a>
             </div>
+            {% endif %}
 
         </div>
     </div>

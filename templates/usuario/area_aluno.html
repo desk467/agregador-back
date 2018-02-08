@@ -10,20 +10,21 @@
         <h4>Disciplinas disponíveis para a instituição '{{estudante.instituicao}}'</h4>
 
         {% for disciplina in disciplinas_disponiveis %}
-        <div class="aluno-disciplina">
-            <a href="/disciplina/{{disciplina.id}}">
-                <span class="nome">{{disciplina.nome}}</span>
-            </a>
-            <span class="btn assinar"><i class="fa fa-rss-square"></i> Assinar</span>
-            </div>
+            {% include 'disciplina/_disciplina.html' %}
         {% else %}
         <h4>A sua instituição ainda não tem disciplinas cadastradas em nosso site.</h4>
         {% endfor %}
     </div>
     
-    <div class="col-md-4">
-        <h3>cronograma:</h3>
+    <div class="col-md-4 feed">
+        <h3>disciplinas assinadas:</h3>
         <div class="linha-verde"></div>
-        <p>Em desenvolvimento</p>
+        <div class="disciplinas">
+            {% for disciplina in disciplinas_assinadas %}
+                {% include 'disciplina/_disciplina.html' %}
+            {% else %}
+        </div>
+        <h4>Você ainda não assinou nenhuma disciplina.</h4>
+        {% endfor %}
     </div>
 </div>

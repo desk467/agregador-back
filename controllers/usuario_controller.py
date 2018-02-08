@@ -9,9 +9,12 @@ from models.usuario import Usuario, TipoUsuario
 from models.professor import Professor
 from models.estudante import Estudante
 from models.disciplina import Disciplina
+from models.estudante_disciplina import EstudanteDisciplina
 from models.instituicao import Instituicao
 
 from playhouse.shortcuts import model_to_dict
+
+from models.disciplina import Disciplina
 
 from util import campos_presentes_na_requisicao, usuario
 from util.erro import Erro, gerar_erro_campo_invalido, gerar_erro_campo_obrigatorio
@@ -45,7 +48,10 @@ def pagina_inicial():
         disciplinas_disponiveis = [disciplina for disciplina in Disciplina.select().where(
             Disciplina.instituicao == estudante.instituicao)]
 
-        return render_template('usuario/index.html', estudante=estudante, disciplinas_disponiveis=disciplinas_disponiveis)
+        disciplinas_assinadas = [disciplina for disciplina in Disciplina.select().join(
+            EstudanteDisciplina).where(EstudanteDisciplina.estudante == estudante)]
+
+        return render_template('usuario/index.html', estudante=estudante, disciplinas_disponiveis=disciplinas_disponiveis, disciplinas_assinadas=disciplinas_assinadas)
     else:
         return render_template('usuario/index.html')
 

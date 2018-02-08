@@ -222,3 +222,20 @@ a.btn-focused  {
 
     color: rgba(29, 95, 182, 0.5);
 }
+
+.assinar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 4px;
+    padding: .5em 1.5em;
+}
+
+.assinar > * {
+    margin: .5em;
+}
+
+.disciplinas {
+    margin-top: 1em;
+}

@@ -15,7 +15,11 @@
             <a href="/disciplina/{{disciplina.id}}/excluir" class="btn text-danger">Excluir disciplina</a>
         </div>
         {% elif is_estudante %}
-            <span class="btn assinar"><i class="fa fa-rss-square"></i> Assinar</span>
+            {% if disciplina_assinada %}
+                <span class="btn btn-success assinar"><i class="fa fa-rss-square"></i>Assinada</span>
+            {% else %}
+                <a href="/assinar/{{disciplina.id}}" class="btn btn-primary assinar"><i class="fa fa-rss-square"></i> Assinar</a>
+            {% endif %}
         {% endif %}
     </div>
     <h3>{{ disciplina.descricao }}</h3>

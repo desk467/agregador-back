@@ -19,7 +19,7 @@ from models.disciplina import Disciplina
 from models.atividade import Atividade
 from util import usuario, campos_presentes_na_requisicao
 from util.professor import injetar_professor, disciplinas, is_professor
-from util.estudante import is_estudante
+from util.estudante import is_estudante, is_disciplina_assinada
 
 
 @app.route('/disciplina/criar')
@@ -38,7 +38,7 @@ def pagina_disciplina(id_disciplina):
         atividades = [model_to_dict(atividade) for atividade in Atividade.select(
         ).where(Atividade.disciplina == disciplina)]
 
-        return render_template('professor/pagina_disciplina.html', disciplina=model_to_dict(disciplina), atividades=atividades, is_professor=is_professor(usuario()), is_estudante=is_estudante(usuario()))
+        return render_template('professor/pagina_disciplina.html', disciplina=model_to_dict(disciplina), atividades=atividades, is_professor=is_professor(usuario()), is_estudante=is_estudante(usuario()), disciplina_assinada=is_disciplina_assinada(usuario(), id_disciplina))
     except Disciplina.DoesNotExist:
         return render_template('erros/404.html'), 404
 

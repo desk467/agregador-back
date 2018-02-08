@@ -1,0 +1,20 @@
+{% extends 'template/index.html' %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1>Resultados da pesquisa para '{{chave_pesquisa}}'</h1>
+    <div class="linha-verde"></div>
+</div>
+<div class="disciplinas">
+    {% for disciplina in disciplinas_encontradas %}
+        <div class="aluno-disciplina">
+            <a href="/disciplina/{{disciplina.id}}">
+                <span class="nome">{{disciplina.nome}}</span>
+            </a>
+        </div>
+    {% else %}
+        <h2>Nenhuma disciplina encontrada com estes parâmetros.</h2>
+    {% endfor %}
+</div>
+{% endblock %}
+
